@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# UPGRADE SYSTEM
+function upgrade {
+# Initiate system upgrade
+echo ''
+show_info 'Proceed with system upgrade? (Y)es, (N)o : '
+read REPLY
+echo ''
+case $REPLY in
+# Positive Action
+[Yy]* )
+	# Update repo info
+	echo 'Updating repository information...'
+	show_info 'Requires root privilege:'
+	sudo apt-get update
+	# Dist-upgrade
+	echo 'Now performing system upgrade...'
+	sudo apt-get dist-upgrade -y
+	show_success 'Done.'
+	;;
+# Negative action
+[Nn]* )
+	clear && main
+	;;
+# Error
+* )
+	clear && show_error '\aSorry, try again.'
+	upgrade
+	;;
+esac
+}
+

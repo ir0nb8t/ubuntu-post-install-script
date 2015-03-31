@@ -1,0 +1,16 @@
+build-essential
+checkinstall
+cdbs
+devscripts
+dh-make
+fakeroot
+libxml-parser-perl
+check
+cmake
+gedit
+gedit-plugins
+gedit-developer-plugins
+geany
+geany-plugins
+
+

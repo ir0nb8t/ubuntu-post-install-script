@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Install Private Internet Access OpenVPN
+function vpn {
+echo ''
+show_info 'Install Private Internet Access PPA? (Y)es, (N)o :'
+read REPLY
+case $REPLY in
+# Positive action
+[Yy]* )
+	echo 'Installing VPN...'
+	cd /tmp
+	wget -c https://www.privateinternetaccess.com/installer/install_ubuntu.sh
+	chmod +x /tmp/install_ubuntu.sh
+	sudo sh /tmp/install_ubuntu.sh
+	show_success 'Done.'
+	main
+	;;
+# Negative action
+[Nn]* )
+	clear && main;;
+# Error
+* )
+	clear && show_error '\aSorry, try again.'
+	vpn
+	;;
+esac
+}
+

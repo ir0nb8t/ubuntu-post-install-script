@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#-----DECLARATIONS-----#
+
+dir="$(dirname "$0")"
+
+PPA="$dir/data/ppa.list"
+GETDEB="$dir/data/play_get_deb"
+POL="$dir/data/install_playonlinux.sh"
+
+# Add personal package archives and repos
+
+function ppa {
+echo ''
+show_info 'What would you like to do? '
+echo ''
+echo '1. Add ppa list from ppa.list'
+echo '2. Add GetDeb and PlayDeb repos'
+echo '3. Add PlayonLinux repo to /etc/apt/sources.list'
+echo 'r. Return'
+echo ''
+show_info 'Enter your choice:' && read REPLY
+case $REPLY in
+# Add ppa's from ppa.list source file
+1)
+	echo 'Adding PPAs from ppa.list source file...'
+	echo ''
+	sudo bash $PPA
+	show_success 'Done.'
+	ppa
+	;;
+# Add PlayDeb and GetDeb repos
+2)
+	echo 'Adding PlayDeb and Getdeb repos '
+	echo ''
+	sudo bash $GETDEB
+	show_success 'Done.'
+	ppa
+	;;
+# Add repo for PlayOnLinux
+3)
+	echo 'Adding PlayonLinux repo...'
+	echo ''
+        show_info 'Requires root privileges: '
+	sudo bash $POL
+	show_success 'Done.'
+	ppa
+	;;
+# Return
+[Rr]*)
+	clear && main;;
+# Invalid choice
+* )
+	clear && show_error '\aNot an option, try again.' && ppa;;
+esac
+}

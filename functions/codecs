@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#----- DECLARATIONS -----#
+
+dir="$(dirname "$0")"
+
+CODECS="$dir/data/codecs.list"
+
+# Install restricted codecs and other media goodies/baddies
+function codecs {
+echo ''
+show_info 'Install Ubuntu Restricted Extras and other media enablers? (Y)es, (N)o :'
+read REPLY
+case $REPLY in
+# Positive action
+[Yy]* )
+	echo 'Installing packages...'
+	sudo apt-get install -y --install-suggests $(cat $CODECS)
+	show_success 'Done.'
+	main
+	;;
+# Negative action
+[Nn]* )
+	clear && main;;
+# Error
+* )
+	clear && show_error '\aSorry, try again.'
+	codecs
+	;;
+esac
+}
+

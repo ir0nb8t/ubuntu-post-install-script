@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#-----DECLARATIONS-----#
+
+dir="$(dirname "$0")"
+
+PPA="$dir/data/ppa.list"
+GETDEB="$dir/data/play_get_deb
+
+# Add personal package archives and repos
+
+function ppa {
+
+

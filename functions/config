@@ -1,0 +1,73 @@
+#!/bin/sh
+
+#----- DECLARATIONS -----#
+
+dir="$(dirname "$0")"
+
+FIX="$dir/data/fixbuntu"
+
+# CONFIG
+function config {
+echo ''
+show_info 'What would you like to do? '
+echo '1. Fix (apport) system crash dialogues?'
+echo '2. Disable bluetooth on startup?'
+echo '3. Disable guest account?'
+echo '4. Fix avahi .local warning?'
+echo '5. Fix ubuntu shopping lens and calling home?'
+echo 'r. Return'
+echo ''
+show_info 'Enter your choice:' && read REPLY
+case $REPLY in
+# Fix apport crash dialogues
+1)
+	echo 'Now fixing apport crash dialogues...'
+	show_info 'Requires root privileges:'
+	sudo sed -i "s/enabled=1/enabled=0/g" /etc/default/apport
+	cd
+	show_success 'Done.'
+	config
+	;;
+# Disable bluetooth on start up
+2)
+	echo 'Adding config to rc.local...'
+	show_info 'Requires root privileges:'
+	sudo sed -i -e '$i \rfkill block bluetooth\n' /etc/rc.local
+	cd
+	show_success 'Done.'
+	config
+	;;
+# Disable guest account
+3)
+	echo 'Disabling guest account...'
+	show_info 'Requires root privileges:'
+	sudo sed -i -e '$i \allow-guest=false\n' /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+	cd
+	show_success 'Done.'
+	config
+	;;
+# Fix avahi .local warning
+4)
+	echo 'Fixing avahi .local warning...'
+	show_info 'Requires root privileges:'
+	sudo sed -i "s/AVAHI_DAEMON_DETECT_LOCAL=1/AVAHI_DAEMON_DETECT_LOCAL=0/g" /etc/default/avahi-daemon
+	cd
+	show_success 'Done.'
+	config
+	;;
+# Fix shopping lens and attempts to call home
+5)
+	echo 'Running fixbuntu script...'
+	show_info 'Requires root privileges:'
+	sudo bash $FIX
+	show_success 'Done.'
+	config
+	;;
+# Return	
+[Rr]*)
+	clear && main;;
+# Invalid choice
+* )
+	clear && show_error '\aNot an option, try again.' && config;;
+esac
+}
